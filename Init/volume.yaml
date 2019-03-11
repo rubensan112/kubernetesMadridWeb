@@ -1,0 +1,15 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: django-pv
+  labels:
+    type: local
+spec:
+  capacity:
+    storage: 8Gi
+  storageClassName: standard
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: /data/django-pv
+

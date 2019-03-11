@@ -1,0 +1,29 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: django-clone
+spec:
+  template:
+    spec:
+      containers:
+        - name: git-clone
+          image: alpine/git # Any image with git will do
+          args:
+            - clone
+            - https://github.com/rubensan112/madridWeb # Your repo
+            - /repo # Put it in the volume
+          #securityContext:
+            #runAsUser: 1 # Any non-root user will do. Match to the workload.
+            #allowPrivilegeEscalation: false
+            #readOnlyRootFilesystem: true
+          volumeMounts:
+            - name: django-volume-mount
+              mountPath: /repo
+
+      volumes:
+        - name: django-volume-mount
+          persistentVolumeClaim:
+            claimName: django-pvc
+
+      restartPolicy: Never
+  backoffLimit: 5

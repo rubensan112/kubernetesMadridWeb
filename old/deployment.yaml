@@ -1,0 +1,36 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: django
+  labels:
+    app: django
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      pod: django
+  template:
+    metadata:
+      labels:
+        pod: django
+    spec:
+      initContainers:
+        # This container clones the desired git repo to the EmptyDir volume.
+        - name: git-clone
+          image: alpine/git # Any image with git will do
+          args:
+            - clone
+            - --single-branch
+            - --
+            - https://github.com/rubensan112/madridWeb # Your repo
+            - /repo # Put it in the volume
+          securityContext:
+            runAsUser: 1 # Any non-root user will do. Match to the workload.
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+          volumeMounts:
+            - name: git-repo
+              mountPath: /repo
+      volumes:
+        - name: git-repo
+          emptyDir: {}
