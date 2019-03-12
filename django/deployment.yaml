@@ -35,6 +35,8 @@ spec:
 
             - name: POSTGRES_HOST
               value: postgres-service
+            - name: VITA_ENVIRONMENT
+              value: 'kubernetes'
           volumeMounts:
             - name: django-volume-mount
               mountPath: /repo

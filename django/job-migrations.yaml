@@ -24,5 +24,9 @@ spec:
 
             - name: POSTGRES_HOST
               value: postgres-service
+
+            - name: VITA_ENVIRONMENT
+              value: 'kubernetes'
+
       restartPolicy: Never
   backoffLimit: 5
